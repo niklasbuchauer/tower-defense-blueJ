@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Hud
+comment1.params=g\ player\ waveManager
+comment1.target=void\ draw(java.awt.Graphics,\ Player,\ WaveManager)
+comment2.params=g\ player\ waveManager\ selected
+comment2.target=void\ draw(java.awt.Graphics,\ Player,\ WaveManager,\ int)
+numComments=3

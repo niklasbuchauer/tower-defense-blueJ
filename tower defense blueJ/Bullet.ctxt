@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Bullet
+comment1.params=x\ y\ target\ damage
+comment1.target=Bullet(double,\ double,\ Enemy,\ int)
+comment2.params=
+comment2.target=void\ update()
+comment3.params=
+comment3.target=boolean\ isActive()
+comment4.params=g
+comment4.target=void\ draw(java.awt.Graphics)
+numComments=5
