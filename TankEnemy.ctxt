@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=TankEnemy
+comment1.params=path\ wave
+comment1.target=TankEnemy(java.util.ArrayList,\ int)
+comment2.params=
+comment2.target=java.awt.Color\ getColor()
+numComments=3
