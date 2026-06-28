@@ -47,15 +47,19 @@ public class FreezeTower extends Tower
         // Eissplitter (Lvl 4): auftauende Gegner beschädigen
         if (level >= 4)
         {
-            for (Enemy e : enemies)
+            for (Enemy e : new ArrayList<>(enemies))
             {
                 if (e.isDead()) continue;
-                if (!e.isFrozen())
+                double dx = e.getX() - x;
+                double dy = e.getY() - y;
+                if (Math.sqrt(dx * dx + dy * dy) <= range + 40)
                 {
-                    double dx = e.getX() - x;
-                    double dy = e.getY() - y;
-                    if (Math.sqrt(dx * dx + dy * dy) <= range + 40)
+                    // NEU: nur spawnen wenn Gegner GERADE aufgetaut ist
+                    if (!e.isFrozen() && e.wasJustUnfrozen())
+                    {
                         splinters.add(new IceSplinterEffect(e.getX(), e.getY(), 50, 15, enemies));
+                        e.resetUnfrozenFlag(); // NEU
+                    }
                 }
             }
             splinters.removeIf(s -> s.isFinished());
@@ -134,7 +138,7 @@ public class FreezeTower extends Tower
     {
         switch (level)
         {
-            case 1: return "Längere Freeze-Dauer";
+            case 1: return "Längere Freeze-Dauer"; 
             case 2: return "Flächen-Freeze (AoE)";
             case 3: return "Eissplitter beim Auftauen";
             case 4: return "Blizzard-Modus";

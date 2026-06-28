@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=ArmoredEnemy
+comment1.params=path\ wave
+comment1.target=ArmoredEnemy(java.util.ArrayList,\ int)
+comment2.params=damage
+comment2.target=void\ takeDamage(int)
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment4.params=g
+comment4.target=void\ draw(java.awt.Graphics)
+numComments=5

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=ArmorBoss
+comment1.params=path\ wave
+comment1.target=ArmorBoss(java.util.ArrayList,\ int)
+comment2.params=damage
+comment2.target=void\ takeDamage(int)
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+numComments=4

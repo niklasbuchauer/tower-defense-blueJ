@@ -20,6 +20,7 @@ public class Enemy
     private PoisonEffect poison = null;
     
     protected boolean stealth = false;
+    private boolean wasFrozen = false;
     
     public boolean isStealth() { return stealth; }
 
@@ -47,6 +48,9 @@ public class Enemy
     
     public void update(ArrayList<Point> path)
     {
+        boolean frozenLastFrame = wasFrozen;
+        wasFrozen = isFrozen();
+        
         if (currentPoint >= path.size())
             return;
 
@@ -98,6 +102,16 @@ public class Enemy
         return freezeTimer > 0;
     }
 
+    public boolean wasJustUnfrozen()
+    {
+        return wasFrozen && !isFrozen();
+    }  
+    
+    public void resetUnfrozenFlag()
+    {
+        wasFrozen = false;
+    }
+    
     public boolean reachedEnd(ArrayList<Point> path)
     {
         return currentPoint >= path.size();
@@ -108,6 +122,11 @@ public class Enemy
         health -= damage;
     }
 
+    public void heal(int amount)
+    {
+        health = Math.min(health + amount, maxHealth);
+    }
+    
     public boolean isDead()
     {
         return health <= 0;

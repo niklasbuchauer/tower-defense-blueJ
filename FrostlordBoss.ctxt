@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=FrostlordBoss
+comment1.params=path\ wave
+comment1.target=FrostlordBoss(java.util.ArrayList,\ int)
+comment2.params=duration
+comment2.target=void\ applyFreeze(int)
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+numComments=4

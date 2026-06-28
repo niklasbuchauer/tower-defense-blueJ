@@ -164,7 +164,10 @@ public class Game extends Canvas implements Runnable
 
         if (isTowerAt(x, y))
             return;
-
+        
+        if (countTowersOfType(selectedTower) >= 5)
+        return;    
+            
         int cost = getTowerCost();
         if (!player.spendMoney(cost))
             return;
@@ -263,8 +266,46 @@ public class Game extends Canvas implements Runnable
             }
         }
 
+        ArrayList<Enemy> shards = new ArrayList<>();
+        for (Enemy e : enemies)
+        {
+            if (e instanceof SplitterEnemy && e.isDead())
+            {
+                SplitterEnemy sp = (SplitterEnemy) e;
+                if (!sp.isShard() && !sp.hasSpawnedShards())  // NEU: Flag prüfen
+                {
+                    sp.markShardsSpawned();                    // NEU: sofort markieren
+                    for (int i = 0; i < 3; i++)
+                        shards.add(new SplitterEnemy(map.getPath(), waveManager.getWave(), true));
+                }
+            }
+        }
+        enemies.addAll(shards);
+        
         // 5. Tote Gegner und verbrauchte Bullets entfernen
         enemies.removeIf(e -> e.isDead());
+
+        // Heiler: Heilaura updaten
+        for (Enemy e : enemies)
+        {
+            if (e instanceof HealerEnemy)
+                ((HealerEnemy) e).updateHealer(enemies, map.getPath());
+        }
+
+        // IceEnemy: Tower verlangsamen
+        boolean icePresent = false;
+        for (Enemy e : enemies)
+        {
+            if (e instanceof IceEnemy && !e.isDead()) { icePresent = true; break; }
+        }
+        // fireRate aller Tower temporär erhöhen wenn Eisgegner aktiv
+        for (Tower t : towers)
+        {
+            if (icePresent)
+                t.applyIceSlow();
+            else
+                t.removeIceSlow();
+        }
         bullets.removeIf(b -> !b.isActive());
 
         if (player.getLives() <= 0)
@@ -301,12 +342,12 @@ public class Game extends Canvas implements Runnable
         {
             map.draw(g);
 
-            for (Tower t : towers) t.draw(g);
-            for (Enemy e : enemies) e.draw(g);
-            for (Bullet b : bullets) b.draw(g);
+            for (Tower t : new ArrayList<>(towers)) t.draw(g);
+            for (Enemy e : new ArrayList<>(enemies)) e.draw(g);
+            for (Bullet b : new ArrayList<>(bullets)) b.draw(g);
 
             hud.draw(g, player, waveManager, selectedTower);
-            if (infoPanel.isVisible())
+            if (infoPanel != null && infoPanel.isVisible())
                 infoPanel.draw(g, player);
         }
         else if (state == GameState.GAME_OVER)
@@ -322,6 +363,22 @@ public class Game extends Canvas implements Runnable
         bs.show();
     }
 
+    private int countTowersOfType(int type)
+    {
+        int count = 0;
+        for (Tower t : towers)
+        {
+            switch (type)
+            {
+                case 1: if (t instanceof BasicTower)  count++; break;
+                case 2: if (t instanceof SniperTower) count++; break;
+                case 3: if (t instanceof RapidTower)  count++; break;
+                case 4: if (t instanceof FreezeTower) count++; break;
+            }
+        }
+        return count;
+    }
+    
     private void drawMenu(Graphics g)
     {
         g.setColor(Color.BLACK);

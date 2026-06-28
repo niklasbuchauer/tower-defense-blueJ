@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=DemonBoss
+comment1.params=path\ wave
+comment1.target=DemonBoss(java.util.ArrayList,\ int)
+comment2.params=path
+comment2.target=void\ update(java.util.ArrayList)
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+numComments=4
