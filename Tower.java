@@ -25,6 +25,26 @@ public abstract class Tower
     public int getFireRate() { return fireRate; }
     public int getLevel()    { return level; }
     public int getTotalDamageDealt() { return totalDamageDealt; }
+    
+    private boolean iceSlowed = false;
+
+    public void applyIceSlow()
+    {
+        if (!iceSlowed)
+        {
+            iceSlowed = true;
+            fireRate = (int)(fireRate * 1.4);
+        }
+    }
+
+    public void removeIceSlow()
+    {
+        if (iceSlowed)
+        {
+            iceSlowed = false;
+            fireRate = (int)(fireRate / 1.4);
+        }
+    }
 
     public String getName()
     {

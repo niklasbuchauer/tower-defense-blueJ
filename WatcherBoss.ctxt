@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=WatcherBoss
+comment1.params=path\ wave
+comment1.target=WatcherBoss(java.util.ArrayList,\ int)
+comment2.params=
+comment2.target=java.awt.Color\ getColor()
+comment3.params=g
+comment3.target=void\ draw(java.awt.Graphics)
+numComments=4

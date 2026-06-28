@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=SplitterEnemy
+comment1.params=
+comment1.target=boolean\ hasSpawnedShards()
+comment2.params=
+comment2.target=void\ markShardsSpawned()
+comment3.params=path\ wave\ isShard
+comment3.target=SplitterEnemy(java.util.ArrayList,\ int,\ boolean)
+comment4.params=
+comment4.target=boolean\ isShard()
+comment5.params=
+comment5.target=java.awt.Color\ getColor()
+comment6.params=g
+comment6.target=void\ draw(java.awt.Graphics)
+numComments=7

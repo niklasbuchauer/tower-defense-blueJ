@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=ShadowBoss
+comment1.params=path\ wave
+comment1.target=ShadowBoss(java.util.ArrayList,\ int)
+comment2.params=path
+comment2.target=void\ update(java.util.ArrayList)
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment4.params=g
+comment4.target=void\ draw(java.awt.Graphics)
+numComments=5
