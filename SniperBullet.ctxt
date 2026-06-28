@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=SniperBullet
+comment1.params=x\ y\ target\ damage\ canHeadshot
+comment1.target=SniperBullet(double,\ double,\ Enemy,\ int,\ boolean)
+comment2.params=
+comment2.target=void\ onHit()
+comment3.params=g
+comment3.target=void\ draw(java.awt.Graphics)
+numComments=4

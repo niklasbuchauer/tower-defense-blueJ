@@ -13,8 +13,28 @@ public abstract class Tower
     protected int damage;
     protected int fireRate;
     protected int cooldown;
+    protected int totalDamageDealt = 0;
 
     protected int level;
+    
+    public abstract String getUpgradeDescription();
+    public abstract int getUpgradeCost();   
+    
+    public int getDamage()   { return damage; }
+    public int getRange()    { return range; }
+    public int getFireRate() { return fireRate; }
+    public int getLevel()    { return level; }
+    public int getTotalDamageDealt() { return totalDamageDealt; }
+
+    public String getName()
+    {
+        if (this instanceof BasicTower)  return "Basic Tower";
+        if (this instanceof SniperTower) return "Sniper Tower";
+        if (this instanceof RapidTower)  return "Rapid Tower";
+        if (this instanceof FreezeTower) return "Freeze Tower";
+        return "Tower";
+    }
+    
 
     public Tower(int x, int y)
     {
@@ -37,6 +57,7 @@ public abstract class Tower
         if (target != null)
         {
             bullets.add(new Bullet(x, y, target, damage));
+            totalDamageDealt += damage;
             cooldown = fireRate;
         }
     }
@@ -72,11 +93,6 @@ public abstract class Tower
 
         if (fireRate > 10)
             fireRate -= 3;
-    }
-
-    public int getUpgradeCost()
-    {
-        return level * 60;
     }
 
     public void draw(Graphics g)

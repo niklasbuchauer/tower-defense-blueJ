@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=ExplosionBullet
+comment1.params=x\ y\ target\ damage\ allEnemies\ splashRadius\ elite
+comment1.target=ExplosionBullet(double,\ double,\ Enemy,\ int,\ java.util.ArrayList,\ int,\ boolean)
+comment2.params=
+comment2.target=void\ onHit()
+comment3.params=g
+comment3.target=void\ draw(java.awt.Graphics)
+numComments=4

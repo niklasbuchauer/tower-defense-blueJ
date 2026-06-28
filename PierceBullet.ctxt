@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=PierceBullet
+comment1.params=x\ y\ target\ damage\ allEnemies\ pierceCount\ elite
+comment1.target=PierceBullet(double,\ double,\ Enemy,\ int,\ java.util.ArrayList,\ int,\ boolean)
+comment2.params=
+comment2.target=void\ update()
+comment3.params=
+comment3.target=void\ onHit()
+comment4.params=g
+comment4.target=void\ draw(java.awt.Graphics)
+numComments=5

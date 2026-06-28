@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=TowerInfoPanel
+comment1.params=t
+comment1.target=void\ select(Tower)
+comment2.params=
+comment2.target=void\ deselect()
+comment3.params=
+comment3.target=Tower\ getSelected()
+comment4.params=
+comment4.target=boolean\ isVisible()
+comment5.params=x\ y
+comment5.target=boolean\ isUpgradeButtonClick(int,\ int)
+comment6.params=g\ player
+comment6.target=void\ draw(java.awt.Graphics,\ Player)
+comment7.params=
+comment7.target=java.lang.String\ getFireRateLabel()
+comment8.params=
+comment8.target=java.lang.String\ getUpgradePreview()
+numComments=9

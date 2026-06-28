@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=RailgunBullet
+comment1.params=x\ y\ target\ damage\ allEnemies
+comment1.target=RailgunBullet(double,\ double,\ Enemy,\ int,\ java.util.ArrayList)
+comment2.params=
+comment2.target=void\ onHit()
+comment3.params=g
+comment3.target=void\ draw(java.awt.Graphics)
+numComments=4

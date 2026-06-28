@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=PoisonEffect
+comment1.params=damage\ ticks\ tickInterval
+comment1.target=PoisonEffect(int,\ int,\ int)
+comment2.params=
+comment2.target=int\ update()
+comment3.params=
+comment3.target=boolean\ isFinished()
+numComments=4

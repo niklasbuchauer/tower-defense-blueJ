@@ -17,6 +17,11 @@ public class Enemy
     protected int currentPoint;
 
     private int freezeTimer;
+    private PoisonEffect poison = null;
+    
+    protected boolean stealth = false;
+    
+    public boolean isStealth() { return stealth; }
 
     public Enemy(ArrayList<Point> path, int health, double speed, int reward)
     {
@@ -33,11 +38,26 @@ public class Enemy
         currentPoint = 1;
     }
 
+    public void applyPoison(int damage, int ticks, int tickInterval)
+    {
+        poison = new PoisonEffect(damage, ticks, tickInterval);
+    }
+
+    public boolean isPoisoned() { return poison != null && !poison.isFinished(); }
+    
     public void update(ArrayList<Point> path)
     {
         if (currentPoint >= path.size())
             return;
 
+        // Giftschaden
+        if (poison != null)
+        {
+            int dmg = poison.update();
+            if (dmg > 0) takeDamage(dmg);
+            if (poison.isFinished()) poison = null;
+        }
+            
         // Freeze-Effekt: Speed reduzieren
         if (freezeTimer > 0)
         {
@@ -106,11 +126,13 @@ public class Enemy
 
     public void draw(Graphics g)
     {
-        // Gegner-Körper – blau wenn eingefroren
-        if (isFrozen())
-            g.setColor(new Color(100, 180, 255));
-        else
-            g.setColor(getColor());
+    // Gegner-Körper – blau wenn eingefroren - grün wenn poisend
+    if (isFrozen())
+        g.setColor(new Color(100, 180, 255));
+    else if (isPoisoned())
+        g.setColor(new Color(80, 200, 80));
+    else
+        g.setColor(getColor());
 
         g.fillOval((int)x - 12, (int)y - 12, 24, 24);
 

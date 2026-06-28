@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=PoisonBullet
+comment1.params=x\ y\ target\ damage\ poisonEnabled
+comment1.target=PoisonBullet(double,\ double,\ Enemy,\ int,\ boolean)
+comment2.params=
+comment2.target=void\ onHit()
+comment3.params=g
+comment3.target=void\ draw(java.awt.Graphics)
+numComments=4

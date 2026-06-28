@@ -30,6 +30,8 @@ public class Game extends Canvas implements Runnable
     private ArrayList<Bullet> bullets;
 
     private int selectedTower;
+    
+    private TowerInfoPanel infoPanel;
 
     public Game()
     {
@@ -61,6 +63,8 @@ public class Game extends Canvas implements Runnable
         bullets = new ArrayList<>();
 
         selectedTower = 1;
+        
+        infoPanel = new TowerInfoPanel();
 
         addMouseListener(new MouseAdapter()
         {
@@ -98,25 +102,74 @@ public class Game extends Canvas implements Runnable
 
         setFocusable(true);
     }
+    
+    private boolean isTowerAt(int x, int y)
+    {
+        for (Tower t : towers)
+        {
+            double dx = t.getX() - x;
+            double dy = t.getY() - y;
 
+            if (Math.sqrt(dx * dx + dy * dy) < 30)
+                return true;
+        }
+        return false;
+    }
+
+    private Tower getTowerAt(int x, int y)
+    {
+        for (Tower t : towers)
+        {
+            double dx = t.getX() - x;
+            double dy = t.getY() - y;
+            if (Math.sqrt(dx * dx + dy * dy) < 20)
+                return t;
+        }
+        return null;
+    }
+    
     private void handleMouse(int x, int y, MouseEvent e)
     {
+        // Rechtsklick = immer Upgrade-Menü schließen + altes Upgrade
         if (e.getButton() == MouseEvent.BUTTON3)
         {
-            upgradeTower(x, y);
+            infoPanel.deselect();
             return;
         }
 
+        // Upgrade-Button im Panel geklickt?
+        if (infoPanel.isVisible() && infoPanel.isUpgradeButtonClick(x, y))
+        {
+            Tower t = infoPanel.getSelected();
+            int cost = t.getUpgradeCost();
+            if (player.spendMoney(cost))
+                t.upgrade();
+            return;
+        }
+
+        // Linksklick auf bestehenden Tower -> Panel öffnen
+        Tower clicked = getTowerAt(x, y);
+        if (clicked != null)
+        {
+            infoPanel.select(clicked);
+            return;
+        }
+
+        // Klick ins Leere -> Panel schließen
+        infoPanel.deselect();
+
+        // Tower platzieren
         if (!map.canBuild(x, y))
             return;
 
-        int cost = getTowerCost();
+        if (isTowerAt(x, y))
+            return;
 
+        int cost = getTowerCost();
         if (!player.spendMoney(cost))
             return;
 
         Tower t = null;
-
         switch (selectedTower)
         {
             case 1: t = new BasicTower(x, y);  break;
@@ -124,7 +177,6 @@ public class Game extends Canvas implements Runnable
             case 3: t = new RapidTower(x, y);  break;
             case 4: t = new FreezeTower(x, y); break;
         }
-
         towers.add(t);
     }
 
@@ -253,7 +305,9 @@ public class Game extends Canvas implements Runnable
             for (Enemy e : enemies) e.draw(g);
             for (Bullet b : bullets) b.draw(g);
 
-            hud.draw(g, player, waveManager);
+            hud.draw(g, player, waveManager, selectedTower);
+            if (infoPanel.isVisible())
+                infoPanel.draw(g, player);
         }
         else if (state == GameState.GAME_OVER)
         {
