@@ -118,41 +118,40 @@ Alle 10 Wellen erscheint ein Boss-Gegner. Jeder Boss besitzt eigene, gefährlich
 
 
 Game (Hauptschleife, Canvas)
-├── Player             — Kontrolliert Geld und Leben
-├── WaveManager        — Steuert das Spawnsystem für alle 100 Wellen
-├── GameMap            — Kachel-Gitternetz (Tiles), Pfad- und Bauzonen
-├── Hud                — Zeichnet die Statusanzeigen auf dem Bildschirm
-├── FloatingText       — Verwaltet die aufsteigenden Schadenszahlen
-├── TowerInfoPanel     — Benutzeroberfläche für Turm-Upgrades
-│
-├── Tower (abstrakt)
-│   ├── BasicTower     — Explosionen / Durchschlags-Upgrades
-│   ├── SniperTower    — Railgun / Tarnungserkennung
-│   ├── RapidTower     — Minigun / Giftgeschosse
-│   └── FreezeTower    — Blizzard / Eissplitter-Effekte
-│
-├── Bullet (Basisklasse für Projektile)
-│   ├── FreezeBullet
-│   ├── ExplosionBullet
-│   ├── PoisonBullet
-│   ├── PierceBullet
-│   ├── RailgunBullet
-│   └── SniperBullet
-│
-├── Enemy (Basisklasse für Gegner)
-│   ├── NormalEnemy / FastEnemy / TankEnemy
-│   ├── SplitterEnemy / StealthEnemy / RegenEnemy
-│   ├── ArmoredEnemy / IceEnemy / HealerEnemy
-│   └── BossEnemy (Basisklasse für Bosse)
-│       ├── WatcherBoss / ArmorBoss / ShadowBoss
-│       ├── FrostlordBoss / KingBoss / DemonBoss
-│       ├── TitanBoss / NecromancerBoss
-│       ├── EmperorBoss / EndKingBoss
-│
-└── Effects (Zustandseffekte)
-├── PoisonEffect
-└── IceSplinterEffect
-
+|-- Player             - Kontrolliert Geld und Leben
+|-- WaveManager        - Steuert das Spawnsystem für alle 100 Wellen
+|-- GameMap            - Kachel-Gitternetz (Tiles), Pfad- und Bauzonen
+|-- Hud                - Zeichnet die Statusanzeigen auf dem Bildschirm
+|-- FloatingText       - Verwaltet die aufsteigenden Schadenszahlen
+|-- TowerInfoPanel     - Benutzeroberfläche für Turm-Upgrades
+|
++-- Tower (abstrakt)
+|   |-- BasicTower     - Explosionen / Durchschlags-Upgrades
+|   |-- SniperTower    - Railgun / Tarnungserkennung
+|   |-- RapidTower     - Minigun / Giftgeschosse
+|   +-- FreezeTower    - Blizzard / Eissplitter-Effekte
+|
++-- Bullet (Basisklasse für Projektile)
+|   |-- FreezeBullet
+|   |-- ExplosionBullet
+|   |-- PoisonBullet
+|   |-- PierceBullet
+|   |-- RailgunBullet
+|   +-- SniperBullet
+|
++-- Enemy (Basisklasse für Gegner)
+|   |-- NormalEnemy / FastEnemy / TankEnemy
+|   |-- SplitterEnemy / StealthEnemy / RegenEnemy
+|   |-- ArmoredEnemy / IceEnemy / HealerEnemy
+|   +-- BossEnemy (Basisklasse für Bosse)
+|       |-- WatcherBoss / ArmorBoss / ShadowBoss
+|       |-- FrostlordBoss / KingBoss / DemonBoss
+|       |-- TitanBoss / NecromancerBoss
+|       +-- EmperorBoss / EndKingBoss
+|
++-- Effects (Zustandseffekte)
+    |-- PoisonEffect
+    +-- IceSplinterEffect
 
 ## ⚙️ Installation & Start
 
