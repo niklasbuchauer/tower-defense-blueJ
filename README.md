@@ -1,4 +1,3 @@
-
 # 🏰 Tower Defense
 
 Ein in Java programmiertes Tower Defense Spiel, entwickelt mit BlueJ und inspiriert von Bloons TD 6. Verteidige deine Basis gegen 100 zunehmend schwierigere Wellen mit vier einzigartigen Türmen — jeder mit fünf Upgrade-Stufen, die seine Spielweise grundlegend verändern.
@@ -24,7 +23,7 @@ Ein in Java programmiertes Tower Defense Spiel, entwickelt mit BlueJ und inspiri
 - Du kannst **maximal 5 Türme pro Typ** platzieren.
 - Türme dürfen sich nicht überlappen.
 - **Maus-Vorschau:** Wenn du einen Turm zum Platzieren ausgewählt hast, siehst du an der Maus seinen Reichweitenkreis und seine Kosten. Die Anzeige leuchtet **Grün**, wenn du genug Geld hast, und **Rot**, wenn es zu teuer ist.
-- **Schadenszahlen:** Treffer erzeugen dynamische, farbige Schadenszahlen, die über den Gegnern aufsteigen und verblassen.
+- **Schadenszahlen:** Treffer erzeugen dynamische, fette Schadenszahlen, die über den Gegnern aufsteigen und verblassen.
 
 ---
 
@@ -114,9 +113,6 @@ Alle 10 Wellen erscheint ein Boss-Gegner. Jeder Boss besitzt eigene, gefährlich
 
 ## 🏗️ Architektur & Klassenstruktur
 
-
-
-
 Game (Hauptschleife, Canvas)
 |-- Player             - Kontrolliert Geld und Leben
 |-- WaveManager        - Steuert das Spawnsystem für alle 100 Wellen
@@ -150,8 +146,10 @@ Game (Hauptschleife, Canvas)
 |       +-- EmperorBoss / EndKingBoss
 |
 +-- Effects (Zustandseffekte)
-    |-- PoisonEffect
-    +-- IceSplinterEffect
+|-- PoisonEffect
++-- IceSplinterEffect
+
+---
 
 ## ⚙️ Installation & Start
 
@@ -183,4 +181,3 @@ Der Kartentyp wird über den `MapSelector` unter Verwendung des `MapType`-Enums 
 - **Upgrade-Skalierung:** Die Kosten für Upgrades steigen exponentiell an, bieten dafür aber mächtige Gameplay-Veränderungen auf Stufe 5.
 - **Eis-Gegner:** Sollten oberste Priorität beim Abschuss haben, da sie die Angriffsgeschwindigkeit deiner Verteidigung massiv drosseln.
 - **Tarnung:** Vergiss nicht, rechtzeitig einen Sniper auf Stufe 3 zu bringen, da getarnte Gegner sonst unbeschadet durch deine Linien spazieren!
-
