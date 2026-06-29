@@ -21,7 +21,7 @@ public class Bullet
         this.active = true;
     }
 
-    public void update()
+    public void update(Game game) // <-- Parameter 'Game game' hinzugefügt
     {
         if (target == null || target.isDead())
         {
@@ -35,7 +35,7 @@ public class Bullet
 
         if (dist < speed)
         {
-            onHit();
+            onHit(game); // <-- game weitergeben
             active = false;
         }
         else
@@ -46,9 +46,11 @@ public class Bullet
     }
 
     // Kann von Unterklassen überschrieben werden (z.B. FreezeBullet)
-    protected void onHit()
+    protected void onHit(Game game) // <-- Parameter 'Game game' hinzugefügt
     {
         target.takeDamage(damage);
+        // Spawnt eine standardmäßige rote Schadenszahl
+        game.addFloatingText(target.getX(), target.getY(), "-" + damage, Color.RED);
     }
 
     public boolean isActive()   { return active; }

@@ -2,8 +2,8 @@
 comment0.target=FreezeBullet
 comment1.params=x\ y\ target\ damage\ freezeDuration
 comment1.target=FreezeBullet(double,\ double,\ Enemy,\ int,\ int)
-comment2.params=
-comment2.target=void\ onHit()
+comment2.params=game
+comment2.target=void\ onHit(Game)
 comment3.params=g
 comment3.target=void\ draw(java.awt.Graphics)
 numComments=4

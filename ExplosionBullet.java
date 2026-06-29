@@ -17,7 +17,7 @@ public class ExplosionBullet extends Bullet
         this.elite        = elite;
     }
 
-    protected void onHit()
+    protected void onHit(Game game)
     {
         // AoE-Schaden
         for (Enemy e : allEnemies)
@@ -29,6 +29,8 @@ public class ExplosionBullet extends Bullet
             {
                 int dealt = elite ? damage * 2 : damage;
                 e.takeDamage(dealt);
+                // Orangefarbene Zahlen über allen getroffenen Gegnern
+                game.addFloatingText(e.getX(), e.getY(), "-" + dealt, Color.ORANGE);
             }
         }
     }

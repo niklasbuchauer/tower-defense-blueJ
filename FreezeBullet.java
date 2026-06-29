@@ -11,10 +11,12 @@ public class FreezeBullet extends Bullet
         this.freezeDuration = freezeDuration;
     }
 
-    protected void onHit()
+    protected void onHit(Game game)
     {
         target.takeDamage(damage);
         target.applyFreeze(freezeDuration);
+        // Schönes Hellblau für den Eis-Schaden!
+        game.addFloatingText(target.getX(), target.getY(), "-" + damage, new Color(100, 200, 255));
     }
 
     public void draw(Graphics g)

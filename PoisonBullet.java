@@ -11,11 +11,17 @@ public class PoisonBullet extends Bullet
         this.poisonEnabled = poisonEnabled;
     }
 
-    protected void onHit()
+    protected void onHit(Game game)
     {
         target.takeDamage(damage);
+        game.addFloatingText(target.getX(), target.getY(), "-" + damage, Color.RED);
+        
         if (poisonEnabled)
-            target.applyPoison(3, 8, 20); // 3 DMG, 8 Ticks, alle 20 Frames
+        {
+            target.applyPoison(3, 8, 20); // 3 DMG, 8 Ticks, alle 20 Ticks
+            // Zeigt zusätzlich ein grünes "Poison!" an
+            game.addFloatingText(target.getX(), target.getY() - 20, "Poison!", new Color(50, 200, 50));
+        }
     }
 
     public void draw(Graphics g)

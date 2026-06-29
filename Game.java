@@ -29,7 +29,11 @@ public class Game extends Canvas implements Runnable
     private ArrayList<Tower> towers;
     private ArrayList<Bullet> bullets;
 
-    private int selectedTower;
+    private int selectedTower; // 0 = Kein Turm ausgewählt, 1-4 = Turmtyp aktiv
+    
+    // Listen und Einstellungen für visuelle Effekte
+    private java.util.List<FloatingText> floatingTexts = new java.util.ArrayList<>();
+    public boolean showDamageNumbers = true; // Schalter für die Einstellungen (true = an, false = aus)
     
     private TowerInfoPanel infoPanel;
 
@@ -62,7 +66,7 @@ public class Game extends Canvas implements Runnable
         towers = new ArrayList<>();
         bullets = new ArrayList<>();
 
-        selectedTower = 1;
+        selectedTower = 0; // Startet ohne Auswahl
         
         infoPanel = new TowerInfoPanel();
 
@@ -91,6 +95,8 @@ public class Game extends Canvas implements Runnable
                 if (e.getKeyCode() == KeyEvent.VK_2) selectedTower = 2;
                 if (e.getKeyCode() == KeyEvent.VK_3) selectedTower = 3;
                 if (e.getKeyCode() == KeyEvent.VK_4) selectedTower = 4;
+                
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) selectedTower = 0;
 
                 if (e.getKeyCode() == KeyEvent.VK_ENTER)
                 {
@@ -130,14 +136,13 @@ public class Game extends Canvas implements Runnable
     
     private void handleMouse(int x, int y, MouseEvent e)
     {
-        // Rechtsklick = immer Upgrade-Menü schließen + altes Upgrade
         if (e.getButton() == MouseEvent.BUTTON3)
         {
+            selectedTower = 0; 
             infoPanel.deselect();
             return;
         }
 
-        // Upgrade-Button im Panel geklickt?
         if (infoPanel.isVisible() && infoPanel.isUpgradeButtonClick(x, y))
         {
             Tower t = infoPanel.getSelected();
@@ -147,7 +152,6 @@ public class Game extends Canvas implements Runnable
             return;
         }
 
-        // Linksklick auf bestehenden Tower -> Panel öffnen
         Tower clicked = getTowerAt(x, y);
         if (clicked != null)
         {
@@ -155,10 +159,11 @@ public class Game extends Canvas implements Runnable
             return;
         }
 
-        // Klick ins Leere -> Panel schließen
         infoPanel.deselect();
 
-        // Tower platzieren
+        if (selectedTower == 0)
+            return;
+
         if (!map.canBuild(x, y))
             return;
 
@@ -166,7 +171,7 @@ public class Game extends Canvas implements Runnable
             return;
         
         if (countTowersOfType(selectedTower) >= 5)
-        return;    
+            return;    
             
         int cost = getTowerCost();
         if (!player.spendMoney(cost))
@@ -187,10 +192,10 @@ public class Game extends Canvas implements Runnable
     {
         switch (selectedTower)
         {
-            case 1: return 50;
-            case 2: return 120;
-            case 3: return 85;
-            case 4: return 75;
+            case 1: return 60; // Angepasst an die Menüanzeige (60$)
+            case 2: return 100; // Angepasst an die Menüanzeige (100$)
+            case 3: return 80;  // Angepasst an die Menüanzeige (80$)
+            case 4: return 90;  // Angepasst an die Menüanzeige (90$)
         }
         return 60;
     }
@@ -230,12 +235,10 @@ public class Game extends Canvas implements Runnable
 
         waveManager.update(enemies, map.getPath());
 
-        // 1. Gegner bewegen
         for (Enemy e : enemies)
         {
             e.update(map.getPath());
 
-            // Ziel erreicht: Leben abziehen, Belohnung entfernen (kein Geld)
             if (e.reachedEnd(map.getPath()) && !e.isDead())
             {
                 player.loseLife(1);
@@ -244,19 +247,26 @@ public class Game extends Canvas implements Runnable
             }
         }
 
-        // 2. Türme schießen
         for (Tower t : towers)
         {
             t.update(enemies, bullets);
         }
 
-        // 3. Bullets bewegen und Treffer verarbeiten
         for (Bullet b : bullets)
         {
-            b.update();
+            b.update(this);
         }
 
-        // 4. JETZT erst Geld prüfen – nach Bullet-Schaden dieser Frame
+        for (int i = floatingTexts.size() - 1; i >= 0; i--)
+        {
+            FloatingText ft = floatingTexts.get(i);
+            ft.update();
+            if (ft.isDead())
+            {
+                floatingTexts.remove(i);
+            }
+        }
+
         for (Enemy e : enemies)
         {
             if (e.isDead() && e.getReward() > 0)
@@ -272,9 +282,9 @@ public class Game extends Canvas implements Runnable
             if (e instanceof SplitterEnemy && e.isDead())
             {
                 SplitterEnemy sp = (SplitterEnemy) e;
-                if (!sp.isShard() && !sp.hasSpawnedShards())  // NEU: Flag prüfen
+                if (!sp.isShard() && !sp.hasSpawnedShards())  
                 {
-                    sp.markShardsSpawned();                    // NEU: sofort markieren
+                    sp.markShardsSpawned();                    
                     for (int i = 0; i < 3; i++)
                         shards.add(new SplitterEnemy(map.getPath(), waveManager.getWave(), true));
                 }
@@ -282,23 +292,19 @@ public class Game extends Canvas implements Runnable
         }
         enemies.addAll(shards);
         
-        // 5. Tote Gegner und verbrauchte Bullets entfernen
         enemies.removeIf(e -> e.isDead());
 
-        // Heiler: Heilaura updaten
         for (Enemy e : enemies)
         {
             if (e instanceof HealerEnemy)
                 ((HealerEnemy) e).updateHealer(enemies, map.getPath());
         }
 
-        // IceEnemy: Tower verlangsamen
         boolean icePresent = false;
         for (Enemy e : enemies)
         {
             if (e instanceof IceEnemy && !e.isDead()) { icePresent = true; break; }
         }
-        // fireRate aller Tower temporär erhöhen wenn Eisgegner aktiv
         for (Tower t : towers)
         {
             if (icePresent)
@@ -346,6 +352,53 @@ public class Game extends Canvas implements Runnable
             for (Enemy e : new ArrayList<>(enemies)) e.draw(g);
             for (Bullet b : new ArrayList<>(bullets)) b.draw(g);
 
+            for (FloatingText ft : floatingTexts)
+            {
+                ft.draw(g);
+            }
+
+            // REICHWEITEN-KREIS UND PREISANZEIGE AN DER MAUS
+            if (selectedTower != 0) 
+            {
+                java.awt.Point mousePoint = getMousePosition();
+                if (mousePoint != null) 
+                {
+                    int mouseX = mousePoint.x;
+                    int mouseY = mousePoint.y;
+                    
+                    int currentRange = 100; 
+                    String infoText = "";
+                    
+                    if (selectedTower == 1) { currentRange = 120; infoText = "Basic: 60$"; }
+                    if (selectedTower == 2) { currentRange = 250; infoText = "Sniper: 100$"; }
+                    if (selectedTower == 3) { currentRange = 90;  infoText = "Rapid: 80$"; }
+                    if (selectedTower == 4) { currentRange = 130; infoText = "Freeze: 90$"; }
+                    
+                    // 1. Reichweitenkreis zeichnen
+                    g.setColor(new Color(0, 150, 255, 40)); 
+                    g.fillOval(mouseX - currentRange, mouseY - currentRange, currentRange * 2, currentRange * 2);
+                    g.setColor(new Color(0, 150, 255, 120));
+                    g.drawOval(mouseX - currentRange, mouseY - currentRange, currentRange * 2, currentRange * 2);
+                    
+                    // 2. Kostenanzeige neben dem Mauszeiger zeichnen
+                    Font prevFont = g.getFont();
+                    g.setFont(new Font("Arial", Font.BOLD, 14));
+                    
+                    // Schatten für Lesbarkeit der Kosten
+                    g.setColor(Color.BLACK);
+                    g.drawString(infoText, mouseX + 16, mouseY + 6);
+                    
+                    // Farb-Indikator: Rot wenn zu teuer, Grün wenn bezahlbar
+                    if (player.getMoney() >= getTowerCost()) {
+                        g.setColor(new Color(0, 200, 0)); // Schönes Grün
+                    } else {
+                        g.setColor(Color.RED);
+                    }
+                    g.drawString(infoText, mouseX + 15, mouseY + 5);
+                    g.setFont(prevFont);
+                }
+            }
+
             hud.draw(g, player, waveManager, selectedTower);
             if (infoPanel != null && infoPanel.isVisible())
                 infoPanel.draw(g, player);
@@ -390,7 +443,7 @@ public class Game extends Canvas implements Runnable
 
         g.setFont(new Font("Arial", Font.PLAIN, 14));
         g.drawString("Taste 1 = Basic (60$)   2 = Sniper (100$)   3 = Rapid (80$)   4 = Freeze (90$)", 130, 340);
-        g.drawString("Linksklick = Tower setzen        Rechtsklick = Tower upgraden", 180, 365);
+        g.drawString("Linksklick = Tower setzen        Rechtsklick = Auswahl aufheben / Menue schliessen", 140, 365);
     }
 
     private void drawGameOver(Graphics g)
@@ -431,6 +484,12 @@ public class Game extends Canvas implements Runnable
 
                 break;
             }
+        }
+    }
+    
+    public void addFloatingText(double x, double y, String text, Color color) {
+        if (showDamageNumbers) {
+            floatingTexts.add(new FloatingText(x, y, text, color));
         }
     }
 }
