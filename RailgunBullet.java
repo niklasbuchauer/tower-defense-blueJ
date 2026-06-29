@@ -13,7 +13,7 @@ public class RailgunBullet extends Bullet
         this.speed = 18;
     }
 
-    protected void onHit()
+    protected void onHit(Game game)
     {
         // Trifft alle Gegner in einer Linie (40px Breite)
         for (Enemy e : allEnemies)
@@ -22,7 +22,12 @@ public class RailgunBullet extends Bullet
             double dx = e.getX() - x;
             double dy = e.getY() - y;
             double dist = Math.abs(dx * Math.sin(0) - dy * Math.cos(0)); // vereinfacht
-            if (dist <= 40) e.takeDamage(damage);
+            if (dist <= 40) 
+            {
+                e.takeDamage(damage);
+                // Ein futuristisches Magenta/Pink für die Railgun
+                game.addFloatingText(e.getX(), e.getY(), "-" + damage, new Color(255, 0, 150));
+            }
         }
     }
 
